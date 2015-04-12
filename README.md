@@ -7,6 +7,7 @@ Local setup
 3. npm install
 4. DEBUG=myapp ./bin/www
 5. Goto URL - http://localhost:3000/
+
 ***
 Cloud
 ***
