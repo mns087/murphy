@@ -1,4 +1,5 @@
 # murphy
-npm install
-
-DEBUG=myapp ./bin/www
+Setup
+***
+1. npm install
+2. DEBUG=myapp ./bin/www
