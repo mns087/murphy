@@ -1,0 +1,253 @@
+<html>
+<head>
+	<link rel="stylesheet" href="css/bootstrap.css" />
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-default">
+			<div class="container container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Murphy</a>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+
+						<!--<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#">Action</a></li>
+								<li><a href="#">Another action</a></li>
+								<li><a href="#">Something else here</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Separated link</a></li>
+								<li class="divider"></li>
+								<li><a href="#">One more separated link</a></li>
+							</ul>
+						</li> -->
+						<!-- <li><a href="#">Create <span class="sr-only">(current)</span></a></li> -->
+						<li><a href="create.html">Create</a></li>
+						<li><a href="history.html">History</a></li>
+					</ul>
+					<form class="navbar-form navbar-left" role="search">
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Search ROTA for ...">
+						</div>
+						<button type="submit" class="btn btn-default">Search</button>
+					</form>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">About</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+<div class="container">
+	<div class="">
+		<h2>Create</h2>
+	</div>
+	<div>
+		<ul class="nav nav-tabs">
+		  <li class="">
+				<a href="#rota" data-toggle="tab" aria-expanded="false">ROTA</a>
+			</li>
+			<li class="active">
+				<a href="#people" data-toggle="tab" aria-expanded="false">People</a>
+			</li>
+			<li class="">
+				<a href="#role" data-toggle="tab" aria-expanded="false">Role</a>
+			</li>
+			<li class="">
+				<a href="#location" data-toggle="tab" aria-expanded="false">Location</a>
+			</li>
+			<li class="">
+				<a href="#shift" data-toggle="tab" aria-expanded="false">Shift</a>
+			</li>
+
+		  <!-- <li class="active"><a href="#profile" data-toggle="tab" aria-expanded="true">Profile</a></li>
+		  <li class="dropdown">
+		    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+		      Dropdown <span class="caret"></span>
+		    </a>
+		    <ul class="dropdown-menu">
+		      <li><a href="#dropdown1" data-toggle="tab">Action</a></li>
+		      <li class="divider"></li>
+		      <li><a href="#dropdown2" data-toggle="tab">Another action</a></li>
+		    </ul>
+		  </li> -->
+		</ul>
+		<div id="myTabContent" class="tab-content">
+			<div class="tab-pane fade" id="rota">
+		    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
+		  </div>
+		  <div class="tab-pane fade active in" id="people">
+				<div class="well">
+					<form class="form-horizontal">
+					  <fieldset>
+					    <legend>Add people details</legend>
+							<div class="form-group">
+					      <label for="inputEmail" class="col-lg-2 control-label">First Name</label>
+					      <div class="col-lg-10">
+					        <input type="text" class="form-control" id="firstName" placeholder="First Name">
+					      </div>
+					    </div>
+							<div class="form-group">
+					      <label for="inputEmail" class="col-lg-2 control-label">Last Name</label>
+					      <div class="col-lg-10">
+					        <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+					      </div>
+					    </div>
+							<div class="form-group">
+					      <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+					      <div class="col-lg-10">
+					        <input type="text" class="form-control" id="inputEmail" placeholder="Email">
+					      </div>
+					    </div>
+							<div class="form-group">
+					      <label for="inputEmail" class="col-lg-2 control-label">Phone Number</label>
+					      <div class="col-lg-10">
+					        <input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number">
+					      </div>
+					    </div>
+					    <!-- <div class="form-group">
+					      <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+					      <div class="col-lg-10">
+					        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+					        <div class="checkbox">
+					          <label>
+					            <input type="checkbox"> Checkbox
+					          </label>
+					        </div>
+					      </div>
+					    </div>
+					    <div class="form-group">
+					      <label for="textArea" class="col-lg-2 control-label">Textarea</label>
+					      <div class="col-lg-10">
+					        <textarea class="form-control" rows="3" id="textArea"></textarea>
+					        <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
+					      </div>
+					    </div>
+					    <div class="form-group">
+					      <label class="col-lg-2 control-label">Radios</label>
+					      <div class="col-lg-10">
+					        <div class="radio">
+					          <label>
+					            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+					            Option one is this
+					          </label>
+					        </div>
+					        <div class="radio">
+					          <label>
+					            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+					            Option two can be something else
+					          </label>
+					        </div>
+					      </div>
+					    </div>
+					    <div class="form-group">
+					      <label for="select" class="col-lg-2 control-label">Selects</label>
+					      <div class="col-lg-10">
+					        <select class="form-control" id="select">
+					          <option>1</option>
+					          <option>2</option>
+					          <option>3</option>
+					          <option>4</option>
+					          <option>5</option>
+					        </select>
+					        <br>
+					        <select multiple="" class="form-control">
+					          <option>1</option>
+					          <option>2</option>
+					          <option>3</option>
+					          <option>4</option>
+					          <option>5</option>
+					        </select>
+					      </div>
+					    </div>
+							-->
+					    <div class="form-group">
+					      <div class="col-lg-10 col-lg-offset-2">
+					        <button type="reset" class="btn btn-default">Cancel</button>
+					        <button type="submit" class="btn btn-primary">Create</button>
+					      </div>
+					    </div>
+					  </fieldset>
+					</form>
+				</div>
+			</div>
+
+		  <div class="tab-pane fade" id="role">
+		    <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
+				<div class="well">
+					<form class="form-horizontal">
+					  <fieldset>
+					    <legend>Add role details</legend>
+							<div class="form-group">
+					      <label for="roleName" class="col-lg-2 control-label">Role Name</label>
+					      <div class="col-lg-10">
+					        <input type="text" class="form-control" id="roleName" placeholder="e.g - PM, Dev, UX, Arch">
+					      </div>
+					    </div>
+							<div class="form-group">
+								<label for="roleDescription" class="col-lg-2 control-label">Description</label>
+					      <div class="col-lg-10">
+					        <textarea class="form-control" rows="3" id="roleDescription"></textarea>
+					        <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
+					      </div>
+					    </div>
+							<div class="form-group">
+					      <div class="col-lg-10 col-lg-offset-2">
+					        <button type="reset" class="btn btn-default">Cancel</button>
+					        <button type="submit" class="btn btn-primary">Create</button>
+					      </div>
+					    </div>
+					  </fieldset>
+					</form>
+				</div>
+		  </div>
+		  <div class="tab-pane fade" id="location">
+		    <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
+		  </div>
+			<div class="tab-pane fade" id="shift">
+		    <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
+		  </div>
+		</div>
+	</div>
+
+
+</div>
+<div class="progress">
+	<div class="progress-bar progress-bar-success" style="width: 25%"></div>
+	<div class="progress-bar progress-bar-warning" style="width: 25%"></div>
+	<div class="progress-bar progress-bar-danger" style="width: 25%"></div>
+	<div class="progress-bar progress-bar-info" style="width: 25%"></div>
+</div>
+<footer class="container">
+	<div class="row">
+		<div class="col-lg-12">
+			<p class="pull-right"><a href="#top">Back to top</a></p>
+			<!-- <ul class="list-unstyled">
+			<li class="pull-right"><a href="#top">Back to top</a></li>
+			<li><a href="http://news.bootswatch.com" onclick="pageTracker._link(this.href); return false;">Blog</a></li>
+			<li><a href="http://feeds.feedburner.com/bootswatch">RSS</a></li>
+			<li><a href="https://twitter.com/bootswatch">Twitter</a></li>
+			<li><a href="https://github.com/thomaspark/bootswatch/">GitHub</a></li>
+			<li><a href="../help/#api">API</a></li>
+			<li><a href="../help/#support">Support</a></li>
+		</ul> -->
+		<p>Made by <a href="#" rel="nofollow">Ezio Altair</a>. Contact him at <a href="mailto:someone@somewhere.com">someone@somewhere.com</a></p>
+		<p>Based on <a href="http://getbootstrap.com" rel="nofollow">Bootstrap</a>. Icons from <a href="http://fortawesome.github.io/Font-Awesome/" rel="nofollow">Font Awesome</a>. Web fonts from <a href="http://www.google.com/webfonts" rel="nofollow">Google</a>.</p>
+	</div>
+</div>
+</footer>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+</body>
+</html>
