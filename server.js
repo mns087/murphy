@@ -1,86 +1,162 @@
-#!/usr/bin/env node
-
-/**
- * Module dependencies.
- */
-
+#!/bin/env node
+ //  OpenShift sample Node application
+var express = require('express');
+var fs = require('fs');
 var app = require('./app');
-var debug = require('debug')('code:server');
 var http = require('http');
 
-/**
- * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || '8080');
-app.set('port', port);
 
 /**
- * Create HTTP server.
+ *  Define the sample application.
  */
+app.serve = {};
 
-var server = http.createServer(app);
+/*  ================================================================  */
+/*  Helper functions.                                                 */
+/*  ================================================================  */
 
 /**
- * Listen on provided port, on all network interfaces.
+ *  Set up server IP address and port # using env variables/defaults.
  */
+app.serve.setupVariables = function () {
+  //  Set the environment variables we need.
+  app.serve.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
+  app.serve.port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+  if (typeof app.serve.ipaddress === "undefined") {
+    //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
+    //  allows us to run/test the app locally.
+    console.warn('No OPENSHIFT_NODEJS_IP var, using 127.0.0.1');
+    app.serve.ipaddress = "127.0.0.1";
+  };
+};
+
 
 /**
- * Normalize a port into a number, string, or false.
+ *  Populate the cache.
  */
-
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
+app.serve.populateCache = function () {
+  if (typeof app.serve.zcache === "undefined") {
+    app.serve.zcache = {
+      'index.html': ''
+    };
   }
 
-  if (port >= 0) {
-    // port number
-    return port;
-  }
+  //  Local cache for static content.
+  app.serve.zcache['index.html'] = fs.readFileSync('./index.html');
+};
 
-  return false;
-}
 
 /**
- * Event listener for HTTP server "error" event.
+ *  Retrieve entry (content) from cache.
+ *  @param {string} key  Key identifying content to retrieve from cache.
  */
+app.serve.cache_get = function (key) {
+  return app.serve.zcache[key];
+};
 
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
 
-  var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-  case 'EACCES':
-    console.error(bind + ' requires elevated privileges');
+/**
+ *  terminator === the termination handler
+ *  Terminate server on receipt of the specified signal.
+ *  @param {string} sig  Signal to terminate on.
+ */
+app.serve.terminator = function (sig) {
+  if (typeof sig === "string") {
+    console.log('%s: Received %s - terminating sample app ...',
+      Date(Date.now()), sig);
     process.exit(1);
-    break;
-  case 'EADDRINUSE':
-    console.error(bind + ' is already in use');
-    process.exit(1);
-    break;
-  default:
-    throw error;
   }
-}
+  console.log('%s: Node server stopped.', Date(Date.now()));
+};
+
 
 /**
- * Event listener for HTTP server "listening" event.
+ *  Setup termination handlers (for exit and a list of signals).
  */
+app.serve.setupTerminationHandlers = function () {
+  //  Process on exit and signals.
+  process.on('exit', function () {
+    app.serve.terminator();
+  });
 
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-}
+  // Removed 'SIGPIPE' from the list - bugz 852598.
+  ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
+    'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
+  ].forEach(function (element, index, array) {
+    process.on(element, function () {
+      app.serve.terminator(element);
+    });
+  });
+};
+
+
+/*  ================================================================  */
+/*  App server functions (main app logic here).                       */
+/*  ================================================================  */
+
+/**
+ *  Create the routing table entries + handlers for the application.
+ */
+app.serve.createRoutes = function () {
+  app.serve.routes = {};
+
+  app.serve.routes['/asciimo'] = function (req, res) {
+    var link = "http://i.imgur.com/kmbjB.png";
+    res.send("<html><body><img src='" + link + "'></body></html>");
+  };
+
+  app.serve.routes['/'] = function (req, res) {
+    res.setHeader('Content-Type', 'text/html');
+    res.send(app.serve.cache_get('index.html'));
+  };
+};
+
+
+/**
+ *  Initialize the server (express) and create the routes and register
+ *  the handlers.
+ */
+app.serve.initializeServer = function () {
+  app.serve.createRoutes();
+  app.serve.server = http.createServer(app);
+
+  /*
+  //  Add handlers for the app (from the routes).
+  for (var r in app.routes) {
+    app.serve.get(r, app.serve.routes[r]);
+  }
+  */
+};
+
+
+/**
+ *  Initializes the sample application.
+ */
+app.serve.initialize = function () {
+  app.serve.setupVariables();
+  app.serve.populateCache();
+  app.serve.setupTerminationHandlers();
+
+  // Create the express server and routes.
+  app.serve.initializeServer();
+};
+
+
+/**
+ *  Start the server (starts up the sample application).
+ */
+app.serve.start = function () {
+  //  Start the app on the specific interface (and port).
+  app.serve.server.listen(app.serve.port, app.serve.ipaddress, function () {
+    console.log('%s: Node server started on %s:%d ...',
+      Date(Date.now()), app.serve.ipaddress, app.serve.port);
+  });
+};
+
+/**
+ *  main():  Main code.
+ */
+var zapp = app.serve;
+zapp.initialize();
+zapp.start();
