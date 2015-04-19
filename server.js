@@ -1,6 +1,6 @@
 #!/bin/env node
  //  OpenShift sample Node application
-var express = require('express');
+
 var fs = require('fs');
 var app = require('./app');
 var http = require('http');
@@ -157,6 +157,6 @@ app.serve.start = function () {
 /**
  *  main():  Main code.
  */
-var zapp = app.serve;
-zapp.initialize();
-zapp.start();
+
+app.serve.initialize();
+app.serve.start();
