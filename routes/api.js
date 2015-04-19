@@ -61,4 +61,16 @@ router.post('/person/delete', function (req, res, next) {
   });
 });
 
+router.post('/person/update', function (req, res, next) {
+
+  db.query("UPDATE person SET first_name='" + req.body.first_name + "', last_name='" + req.body.last_name + "', email='" + req.body.email + "', mobile='" + req.body.mobile + "' WHERE person_id = '" + req.body.person_id + "'", function (err, rows, fields) {
+    if (err) {
+      throw err;
+      res.send('{"status": "error"}');
+    } else {
+      res.send('{"status": "success"}');
+    }
+  });
+});
+
 module.exports = router;

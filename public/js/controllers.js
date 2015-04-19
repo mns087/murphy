@@ -26,22 +26,22 @@ app.controller('CreatePerson', function ($http) {
       .error(function (error) {});
   };
 
-  this.update = function () {
+  this.update = function (person_index) {
 
-    $http.post('api/person/add', this.personDetail)
+    $http.post('api/person/update', this.persons[person_index])
       .success(function (response) {
-        self.get();
+        self.persons[person_index].editmode = false;
       })
       .error(function (error) {});
   };
 
-  this.delete = function (person_id) {
+  this.delete = function (person_index) {
 
     $http.post('api/person/delete', {
-        'person_id': person_id
+        'person_id': self.persons[person_index].person_id
       })
       .success(function (response) {
-        self.get();
+        self.persons.splice(person_index, 1);
       })
       .error(function (error) {});
   };

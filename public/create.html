@@ -186,6 +186,7 @@
 					</form>
 				</div>
 				<div>
+					<form>
 					<legend>List of people</legend>
 					<ol class="list-group">
 						<li class="list-group-item active">
@@ -203,27 +204,47 @@
 						</li>
 						<li class="list-group-item" ng-repeat="person in createPerson.persons" ng-class="{'list-group-item-warning': person.selected}">
 							<div class="list-group-item-text clearfix">
-								<span class="col-xs-3" ng-bind="person.first_name + ' ' + person.last_name"></span>
-								<span class="col-xs-3" ng-bind="person.email"></span>
-								<span class="col-xs-3" ng-bind="person.mobile"></span>
-								<span class="col-xs-3 hidden-xs text-center">
+								<div class="col-xs-3">
+									<span ng-bind="person.first_name + ' ' + person.last_name" ng-if="!person.editmode"></span>
+									<input type="text" class="form-control" id="firstName" placeholder="First Name"
+				        	ng-model="person.first_name" ng-if="person.editmode" />
+				        	<input type="text" class="form-control" id="lastName" placeholder="Last Name"
+					        ng-model="person.last_name" ng-if="person.editmode" />
+								</div>
+								<div class="col-xs-3">
+									<span ng-bind="person.email" ng-if="!person.editmode"></span>
+									<input type="text" class="form-control" id="inputEmail" placeholder="Email"
+					        ng-model="person.email" ng-if="person.editmode" />
+								</div>
+								<div class="col-xs-3">
+									<span ng-bind="person.mobile" ng-if="!person.editmode"></span>
+									<input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number"
+					        ng-model="person.mobile" ng-if="person.editmode" />
+								</div>
+								
+								<div class="col-xs-3 hidden-xs text-center">
 									<a class="btn btn-default btn-xs" role="button" ng-click="person.selected=true" ng-if="!person.selected">Select</a>
-									<a class="btn btn-default btn-xs" role="button" ng-click="person.selected=false" ng-if="person.selected">Unselect</a>
-									<a class="btn btn-default btn-xs" role="button" ng-click="createPerson.edit()">Edit</a>
-									<a class="btn btn-default btn-xs"role="button" ng-click="createPerson.delete(person.person_id)">Delete</a>
-								</span>
+									<a class="btn btn-info btn-xs" role="button" ng-click="person.selected=false" ng-if="person.selected">Unselect</a>
+									<a class="btn btn-default btn-xs" role="button" ng-click="person.editmode=true" ng-if="!person.editmode">Edit</a>
+									<a class="btn btn-info btn-xs" role="button" ng-click="createPerson.update($index)" ng-if="person.editmode">Update</a>
+									<a class="btn btn-default btn-xs"role="button" ng-click="createPerson.delete($index)">Delete</a>
+								</div>
 								<div class="col-xs-3 visible-xs btn-group text-center">
 									<a class="btn btn-default btn-sm" role="button" ng-click="person.selected=true" ng-if="!person.selected">Select</a>
-									<a class="btn btn-default btn-sm" role="button" ng-click="person.selected=false" ng-if="person.selected">Unselect</a>
+									<a class="btn btn-info btn-sm" role="button" ng-click="person.selected=false" ng-if="person.selected">Unselect</a>
 								  <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">&nbsp;<span class="caret"></span></a>
 								  <ul class="dropdown-menu">
-								    <li><a ng-click="createPerson.edit()">Edit</a></li>
-								    <li><a ng-click="createPerson.delete(person.person_id)">Delete</a></li>
+								    <li>
+								    	<a ng-click="person.editmode=true" ng-if="!person.editmode">Edit</a>
+								    	<a ng-click="createPerson.update($index)" ng-if="person.editmode"git >Update</a>
+								    </li>
+								    <li><a ng-click="createPerson.delete($index)">Delete</a></li>
 								  </ul>
 								</div>
 							</div>
 						</li>
 					</ol>
+					</form>
 				</div>
 			</div>
 
