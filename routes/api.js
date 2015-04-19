@@ -39,12 +39,24 @@ router.post('/person/add', function (req, res, next) {
 
 router.get('/person/all', function (req, res, next) {
 
-  db.query("SELECT * FROM person WHERE 1", function (err, rows, fields) {
+  db.query("SELECT * FROM person WHERE 1 ORDER BY person_id DESC", function (err, rows, fields) {
     if (err) {
       throw err;
       res.send('{"status": "error"}');
     } else {
       res.send('{"status": "success", "data" : ' + JSON.stringify(rows) + '}');
+    }
+  });
+});
+
+router.post('/person/delete', function (req, res, next) {
+
+  db.query("DELETE FROM person WHERE person_id = '" + req.body.person_id + "'", function (err, rows, fields) {
+    if (err) {
+      throw err;
+      res.send('{"status": "error"}');
+    } else {
+      res.send('{"status": "success"}');
     }
   });
 });
