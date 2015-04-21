@@ -1,8 +1,9 @@
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="css/bootstrap.css" />
 </head>
-<body ng-app="murphy" ng-controller="CreatePerson as createPerson">
+<body ng-app="murphy">
 	<header>
 		<nav class="navbar navbar-default">
 			<div class="container container-fluid">
@@ -87,7 +88,7 @@
 		    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.
 		    </p>
 		  </div>
-		  <div class="row well tab-pane fade active in" id="person">
+		  <div class="row well tab-pane fade active in" id="person"  ng-controller="CreatePerson as createPerson">
 				<div>
 					<form class="form-horizontal">
 					  <fieldset>
@@ -120,62 +121,6 @@
 					        ng-model="createPerson.personDetail.phone">
 					      </div>
 					    </div>
-					    <!-- <div class="form-group">
-					      <label for="inputPassword" class="col-lg-2 control-label">Password</label>
-					      <div class="col-lg-10">
-					        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-					        <div class="checkbox">
-					          <label>
-					            <input type="checkbox"> Checkbox
-					          </label>
-					        </div>
-					      </div>
-					    </div>
-					    <div class="form-group">
-					      <label for="textArea" class="col-lg-2 control-label">Textarea</label>
-					      <div class="col-lg-10">
-					        <textarea class="form-control" rows="3" id="textArea"></textarea>
-					        <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
-					      </div>
-					    </div>
-					    <div class="form-group">
-					      <label class="col-lg-2 control-label">Radios</label>
-					      <div class="col-lg-10">
-					        <div class="radio">
-					          <label>
-					            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-					            Option one is this
-					          </label>
-					        </div>
-					        <div class="radio">
-					          <label>
-					            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-					            Option two can be something else
-					          </label>
-					        </div>
-					      </div>
-					    </div>
-					    <div class="form-group">
-					      <label for="select" class="col-lg-2 control-label">Selects</label>
-					      <div class="col-lg-10">
-					        <select class="form-control" id="select">
-					          <option>1</option>
-					          <option>2</option>
-					          <option>3</option>
-					          <option>4</option>
-					          <option>5</option>
-					        </select>
-					        <br>
-					        <select multiple="" class="form-control">
-					          <option>1</option>
-					          <option>2</option>
-					          <option>3</option>
-					          <option>4</option>
-					          <option>5</option>
-					        </select>
-					      </div>
-					    </div>
-							-->
 					    <div class="col-xs-12 col-sm-6 form-group">
 					      <div class="col-xs-12 col-lg-offset-3">
 					        <button type="submit" class="btn btn-primary" ng-click="createPerson.add()">Add</button>
@@ -248,41 +193,96 @@
 				</div>
 			</div>
 
-		  <div class="tab-pane fade" id="role">
-		    <div class="well">
-		    	<ul>
-		    		<!-- <li ng-repeat=""> -->
-		    	</ul>
-		    </div>
-		    <div class="well">
+		  <div class="tab-pane fade" id="role"  ng-controller="RoleController as roleCtrl">
+		  	<div>
 					<form class="form-horizontal">
 					  <fieldset>
-					    <legend>Add role details</legend>
-							<div class="form-group">
-					      <label for="roleName" class="col-lg-2 control-label">Role Name</label>
-					      <div class="col-lg-10">
-					        <input type="text" class="form-control" id="roleName" placeholder="e.g - PM, Dev, UX, Arch">
+					    <legend>Add role</legend>
+					    <div class="col-xs-12 col-sm-6 form-group">
+					      <label for="roleName" class="col-lg-3 control-label">Role Name</label>
+					      <div class="col-lg-9">
+					        <input type="text" class="form-control" id="roleName" placeholder="e.g - PM, Dev, Arch"
+				        	ng-model="roleCtrl.roleDetail.role_name">
 					      </div>
 					    </div>
-							<div class="form-group">
-								<label for="roleDescription" class="col-lg-2 control-label">Description</label>
-					      <div class="col-lg-10">
-					        <textarea class="form-control" rows="3" id="roleDescription"></textarea>
-					        <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
+							<div class="col-xs-12 col-sm-6 form-group">
+					      <label for="roleDesc" class="col-lg-3 control-label">Last Name</label>
+					      <div class="col-lg-9">
+					        <textarea class="form-control" rows="3" id="roleDescription" ng-model="roleCtrl.roleDetail.role_desc"></textarea>
 					      </div>
 					    </div>
-							<div class="form-group">
-					      <div class="col-lg-10 col-lg-offset-2">
-					        <button type="reset" class="btn btn-default">Cancel</button>
-					        <button type="submit" class="btn btn-primary">Add</button>
+							<div class="col-xs-12 col-sm-6 form-group">
+					      <div class="col-xs-12 col-lg-offset-3">
+					        <button type="submit" class="btn btn-primary" ng-click="roleCtrl.add()">Add</button>
+					        <button type="reset" class="btn btn-default" ng-click="roleCtrl.reset()">Cancel</button>
 					      </div>
 					    </div>
 					  </fieldset>
 					</form>
 				</div>
+				<div>
+					<form>
+					<legend>List of roles</legend>
+					<ol class="list-group">
+						<li class="list-group-item active">
+							<div class="clearfix">
+								<span class="col-xs-4">Role Name</span>
+								<span class="col-xs-4">Description</span>
+								<span class="col-xs-4 text-center">Actions</span>
+							</div>
+						</li>
+						<li class="list-group-item" ng-if="!createPerson.persons.length">
+							<div class="clearfix">
+								<span class="col-xs-12 text-center">No record available. Please add from above.</span>
+							</div>
+						</li>
+						<li class="list-group-item" ng-repeat="person in createPerson.persons" ng-class="{'list-group-item-warning': person.selected}">
+							<div class="list-group-item-text clearfix">
+								<div class="col-xs-3">
+									<span ng-bind="person.first_name + ' ' + person.last_name" ng-if="!person.editmode"></span>
+									<input type="text" class="form-control" id="firstName" placeholder="First Name"
+				        	ng-model="person.first_name" ng-if="person.editmode" />
+				        	<input type="text" class="form-control" id="lastName" placeholder="Last Name"
+					        ng-model="person.last_name" ng-if="person.editmode" />
+								</div>
+								<div class="col-xs-3">
+									<span ng-bind="person.email" ng-if="!person.editmode"></span>
+									<input type="text" class="form-control" id="inputEmail" placeholder="Email"
+					        ng-model="person.email" ng-if="person.editmode" />
+								</div>
+								<div class="col-xs-3">
+									<span ng-bind="person.mobile" ng-if="!person.editmode"></span>
+									<input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number"
+					        ng-model="person.mobile" ng-if="person.editmode" />
+								</div>
+								
+								<div class="col-xs-3 hidden-xs text-center">
+									<a class="btn btn-default btn-xs" role="button" ng-click="person.selected=true" ng-if="!person.selected">Select</a>
+									<a class="btn btn-info btn-xs" role="button" ng-click="person.selected=false" ng-if="person.selected">Unselect</a>
+									<a class="btn btn-default btn-xs" role="button" ng-click="person.editmode=true" ng-if="!person.editmode">Edit</a>
+									<a class="btn btn-info btn-xs" role="button" ng-click="createPerson.update($index)" ng-if="person.editmode">Update</a>
+									<a class="btn btn-default btn-xs"role="button" ng-click="createPerson.delete($index)">Delete</a>
+								</div>
+								<div class="col-xs-3 visible-xs btn-group text-center">
+									<a class="btn btn-default btn-sm" role="button" ng-click="person.selected=true" ng-if="!person.selected">Select</a>
+									<a class="btn btn-info btn-sm" role="button" ng-click="person.selected=false" ng-if="person.selected">Unselect</a>
+								  <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">&nbsp;<span class="caret"></span></a>
+								  <ul class="dropdown-menu">
+								    <li>
+								    	<a ng-click="person.editmode=true" ng-if="!person.editmode">Edit</a>
+								    	<a ng-click="createPerson.update($index)" ng-if="person.editmode"git >Update</a>
+								    </li>
+								    <li><a ng-click="createPerson.delete($index)">Delete</a></li>
+								  </ul>
+								</div>
+							</div>
+						</li>
+					</ol>
+					</form>
+				</div>
 		  </div>
 		  <div class="tab-pane fade" id="location">
-		    <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
+		    
 		  </div>
 			<div class="tab-pane fade" id="shift">
 		    <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
