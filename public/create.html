@@ -55,10 +55,10 @@
 	</div>
 	<div>
 		<ul class="nav nav-tabs">
-		  <li class="">
+		  <li class="active">
 				<a href="#rota" data-toggle="tab" aria-expanded="false">ROTA</a>
 			</li>
-			<li class="active">
+			<li class="">
 				<a href="#person" data-toggle="tab" aria-expanded="false">Person</a>
 			</li>
 			<li class="">
@@ -84,11 +84,130 @@
 		  </li> -->
 		</ul>
 		<div id="myTabContent" class="tab-content">
-			<div class="tab-pane fade" id="rota">
-		    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.
-		    </p>
+			<div class="row well tab-pane fade active in" id="rota" ng-controller="RotaController as rotaController">
+				<div>
+					<form class="form-horizontal">
+					  <fieldset>
+					    <legend ng-if="!rotaController.editmode">Add ROTA</legend>
+					    <legend ng-if="rotaController.editmode">Update ROTA</legend>
+					    <div class="col-xs-12 col-sm-6 form-group">
+					      <label for="rotaName" class="col-lg-3 control-label">ROTA Name</label>
+					      <div class="col-lg-9">
+					        <input type="text" class="form-control" id="rotaName" placeholder="e.g. Monthly Rota : April 2015"
+				        	ng-model="rotaController.rotaDetail.rota_name">
+					      </div>
+					    </div>
+							<div class="col-xs-12 col-sm-6 form-group">
+					      <label for="rotaDesc" class="col-lg-3 control-label">Description</label>
+					      <div class="col-lg-9">
+					        <textarea class="form-control" rows="1" id="rotaDesc" ng-model="rotaController.rotaDetail.rota_desc" placeholder="starts from ..."></textarea>
+					      </div>
+					    </div>
+							<div class="col-xs-12 form-group" ng-repeat="row in rotaController.rotaDetail.rows">
+					      <div class="col-xs-3">
+					      	<!--
+					      	<select class="form-control" id="rotaPerson" ng-model="row.person_id" ng-options="person.name as person.first_name + ' ' + person.last_name for person in rotaController.rotaAutofill.persons">
+					      		<option value="">Add person</option>
+					      	</select>-->
+					        
+					        <select class="form-control" id="rotaPerson_{{$index}}" ng-model="row.person_id">
+					        	<option value="">Add person</option>
+					        	<option ng-repeat="person in rotaController.rotaAutofill.persons" value="{{person.person_id}}" ng-bind="person.first_name + ' '+ person.last_name" ng-selected="row.person_id==person.person_id"></option>
+					        </select>
+					        
+					      </div>
+					      <div class="col-xs-3">
+					        <select class="form-control" id="rotaRole" ng-model="row.role_id">
+					        	<option value="">Add role</option>
+					        	<option ng-repeat="role in rotaController.rotaAutofill.roles" value="{{role.role_id}}" ng-bind="role.role_name" ng-selected="row.role_id==role.role_id"></option>
+					        </select>
+					      </div>
+					      <div class="col-xs-3">
+					        <select class="form-control" id="rotaLocation" ng-model="row.location_id">
+					        	<option value="">Add location</option>
+					        	<option ng-repeat="location in rotaController.rotaAutofill.locations" value="{{location.location_id}}" ng-bind="location.location_name" ng-selected="row.location_id==location.location_id"></option>
+					        </select>
+					      </div>
+					      <div class="col-xs-3">
+					        <select class="form-control" id="rotaShift" ng-model="row.shift_id">
+					        	<option value="">Add shift</option>
+					        	<option ng-repeat="shift in rotaController.rotaAutofill.shifts" value="{{shift.shift_id}}" ng-bind="shift.shift_name" ng-selected="row.shift_id==shift.shift_id"></option>
+					        </select>
+					      </div>
+					    </div>
+					    
+							<div class="col-xs-12 form-group">
+								<a ng-click="rotaController.addRow()">Add new row</a>
+							</div>
+
+					    <div class="col-xs-12 col-sm-6 form-group">
+					      <div class="col-xs-12 col-lg-offset-3">
+					        <button type="submit" class="btn btn-primary" ng-click="rotaController.add()" ng-if="!rotaController.editmode">Add</button>
+					        <button type="submit" class="btn btn-primary" ng-click="rotaController.update(rotaController.rotaDetail.rota_id)" ng-if="rotaController.editmode">Update</button>
+					        <button type="reset" class="btn btn-default" ng-click="rotaController.reset()">Cancel</button>
+					      </div>
+					    </div>
+					  </fieldset>
+					</form>
+				</div>
+				<div>
+					<form>
+					<legend>List of ROTAs</legend>
+					<ol class="list-group">
+						<li class="list-group-item active">
+							<div class="clearfix">
+								<span class="col-xs-3">Name</span>
+								<span class="col-xs-3">Desciption</span>
+								<span class="col-xs-3">Date</span>
+								<span class="col-xs-3 text-center">Actions</span>
+							</div>
+						</li>
+						<li class="list-group-item" ng-if="!rotaController.rotas.length">
+							<div class="clearfix">
+								<span class="col-xs-12 text-center">No record available. Please add from above.</span>
+							</div>
+						</li>
+						<li class="list-group-item" ng-repeat="rota in rotaController.rotas" ng-class="{'list-group-item-warning': rota.selected}">
+							<div class="list-group-item-text clearfix">
+								<div class="col-xs-3">
+									<span ng-bind="rota.rota_name" ng-if="!rota.editmode"></span>
+									<input type="text" class="form-control" id="rotaName" placeholder="Rota Name"
+				        	ng-model="rota.rota_name" ng-if="rota.editmode"/>
+				        </div>
+								<div class="col-xs-3">
+									<span ng-bind="rota.rota_desc" ng-if="!rota.editmode"></span>
+									<textarea class="form-control" rows="1" id="rotaDesc" ng-model="rota.rota_desc" placeholder="Rota Description" ng-if="rota.editmode"></textarea>
+								</div>
+								<div class="col-xs-3">
+									
+								</div>
+								<div class="col-xs-3 hidden-xs text-center" ng-class="{'col-xs-9 col-xs-offset-3' : rota.editmode}">
+									<a class="btn btn-default btn-xs" role="button" ng-click="rota.selected=true" ng-if="!rota.selected">Select</a>
+									<a class="btn btn-info btn-xs" role="button" ng-click="rota.selected=false" ng-if="rota.selected">Unselect</a>
+									<a class="btn btn-default btn-xs" role="button" ng-click="rotaController.edit($index)" ng-if="!rota.editmode">Edit</a>
+									<a class="btn btn-info btn-xs" role="button" ng-click="rotaController.update($index)" ng-if="rota.editmode">Update</a>
+									<a class="btn btn-default btn-xs"role="button" ng-click="rotaController.delete($index)">Delete</a>
+								</div>
+								<div class="col-xs-3 visible-xs btn-group text-center">
+									<a class="btn btn-default btn-sm" role="button" ng-click="rota.selected=true" ng-if="!rota.selected">Select</a>
+									<a class="btn btn-info btn-sm" role="button" ng-click="rota.selected=false" ng-if="rota.selected">Unselect</a>
+								  <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">&nbsp;<span class="caret"></span></a>
+								  <ul class="dropdown-menu">
+								    <li>
+								    	<a ng-click="rotaController.edit($index)" ng-if="!rota.editmode">Edit</a>
+								    	<a ng-click="rotaController.update($index)" ng-if="rota.editmode">Update</a>
+								    </li>
+								    <li><a ng-click="rotaController.delete($index)">Delete</a></li>
+								  </ul>
+								</div>
+							</div>
+						</li>
+					</ol>
+					</form>
+				</div>
+
 		  </div>
-		  <div class="row well tab-pane fade active in" id="person"  ng-controller="CreatePerson as createPerson">
+		  <div class="row well tab-pane fade" id="person"  ng-controller="CreatePerson as createPerson">
 				<div>
 					<form class="form-horizontal">
 					  <fieldset>
@@ -181,7 +300,7 @@
 								  <ul class="dropdown-menu">
 								    <li>
 								    	<a ng-click="person.editmode=true" ng-if="!person.editmode">Edit</a>
-								    	<a ng-click="createPerson.update($index)" ng-if="person.editmode"git >Update</a>
+								    	<a ng-click="createPerson.update($index)" ng-if="person.editmode" >Update</a>
 								    </li>
 								    <li><a ng-click="createPerson.delete($index)">Delete</a></li>
 								  </ul>
@@ -193,7 +312,7 @@
 				</div>
 			</div>
 
-		  <div class="tab-pane fade" id="role"  ng-controller="RoleController as roleCtrl">
+		  <div class="row well tab-pane fade" id="role"  ng-controller="RoleController as roleCtrl" ng-class="{'active' : roleCtrl.selectedTab}">
 		  	<div>
 					<form class="form-horizontal">
 					  <fieldset>
@@ -206,9 +325,10 @@
 					      </div>
 					    </div>
 							<div class="col-xs-12 col-sm-6 form-group">
-					      <label for="roleDesc" class="col-lg-3 control-label">Last Name</label>
+					      <label for="roleDescription" class="col-lg-3 control-label">Description</label>
 					      <div class="col-lg-9">
-					        <textarea class="form-control" rows="3" id="roleDescription" ng-model="roleCtrl.roleDetail.role_desc"></textarea>
+					        <textarea class="form-control" rows="1" id="roleDescription" ng-model="roleCtrl.roleDetail.role_desc" placeholder="Role Description"></textarea>
+
 					      </div>
 					    </div>
 							<div class="col-xs-12 col-sm-6 form-group">
@@ -231,48 +351,40 @@
 								<span class="col-xs-4 text-center">Actions</span>
 							</div>
 						</li>
-						<li class="list-group-item" ng-if="!createPerson.persons.length">
+						<li class="list-group-item" ng-if="!roleCtrl.roles.length">
 							<div class="clearfix">
 								<span class="col-xs-12 text-center">No record available. Please add from above.</span>
 							</div>
 						</li>
-						<li class="list-group-item" ng-repeat="person in createPerson.persons" ng-class="{'list-group-item-warning': person.selected}">
+						<li class="list-group-item" ng-repeat="role in roleCtrl.roles" ng-class="{'list-group-item-warning': role.selected}">
 							<div class="list-group-item-text clearfix">
-								<div class="col-xs-3">
-									<span ng-bind="person.first_name + ' ' + person.last_name" ng-if="!person.editmode"></span>
-									<input type="text" class="form-control" id="firstName" placeholder="First Name"
-				        	ng-model="person.first_name" ng-if="person.editmode" />
-				        	<input type="text" class="form-control" id="lastName" placeholder="Last Name"
-					        ng-model="person.last_name" ng-if="person.editmode" />
+								<div class="col-xs-4">
+									<span ng-bind="role.role_name" ng-if="!role.editmode"></span>
+									<input type="text" class="form-control" id="roleName" placeholder="Role Name"
+				        	ng-model="role.role_name" ng-if="role.editmode" />
+				        </div>
+								<div class="col-xs-4">
+									<span ng-bind="role.role_desc" ng-if="!role.editmode"></span>
+									<textarea class="form-control" rows="1" id="roleDesc" placeholder="Role Description"
+					        ng-model="role.role_desc" ng-if="role.editmode"></textarea> 
 								</div>
-								<div class="col-xs-3">
-									<span ng-bind="person.email" ng-if="!person.editmode"></span>
-									<input type="text" class="form-control" id="inputEmail" placeholder="Email"
-					        ng-model="person.email" ng-if="person.editmode" />
+								<div class="col-xs-4 hidden-xs text-center">
+									<a class="btn btn-default btn-xs" role="button" ng-click="role.selected=true" ng-if="!role.selected">Select</a>
+									<a class="btn btn-info btn-xs" role="button" ng-click="role.selected=false" ng-if="role.selected">Unselect</a>
+									<a class="btn btn-default btn-xs" role="button" ng-click="role.editmode=true" ng-if="!role.editmode">Edit</a>
+									<a class="btn btn-info btn-xs" role="button" ng-click="roleCtrl.update($index)" ng-if="role.editmode">Update</a>
+									<a class="btn btn-default btn-xs"role="button" ng-click="roleCtrl.delete($index)">Delete</a>
 								</div>
-								<div class="col-xs-3">
-									<span ng-bind="person.mobile" ng-if="!person.editmode"></span>
-									<input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number"
-					        ng-model="person.mobile" ng-if="person.editmode" />
-								</div>
-								
-								<div class="col-xs-3 hidden-xs text-center">
-									<a class="btn btn-default btn-xs" role="button" ng-click="person.selected=true" ng-if="!person.selected">Select</a>
-									<a class="btn btn-info btn-xs" role="button" ng-click="person.selected=false" ng-if="person.selected">Unselect</a>
-									<a class="btn btn-default btn-xs" role="button" ng-click="person.editmode=true" ng-if="!person.editmode">Edit</a>
-									<a class="btn btn-info btn-xs" role="button" ng-click="createPerson.update($index)" ng-if="person.editmode">Update</a>
-									<a class="btn btn-default btn-xs"role="button" ng-click="createPerson.delete($index)">Delete</a>
-								</div>
-								<div class="col-xs-3 visible-xs btn-group text-center">
-									<a class="btn btn-default btn-sm" role="button" ng-click="person.selected=true" ng-if="!person.selected">Select</a>
-									<a class="btn btn-info btn-sm" role="button" ng-click="person.selected=false" ng-if="person.selected">Unselect</a>
+								<div class="col-xs-4 visible-xs btn-group text-center">
+									<a class="btn btn-default btn-sm" role="button" ng-click="role.selected=true" ng-if="!role.selected">Select</a>
+									<a class="btn btn-info btn-sm" role="button" ng-click="role.selected=false" ng-if="role.selected">Unselect</a>
 								  <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">&nbsp;<span class="caret"></span></a>
 								  <ul class="dropdown-menu">
 								    <li>
-								    	<a ng-click="person.editmode=true" ng-if="!person.editmode">Edit</a>
-								    	<a ng-click="createPerson.update($index)" ng-if="person.editmode"git >Update</a>
+								    	<a ng-click="role.editmode=true" ng-if="!role.editmode">Edit</a>
+								    	<a ng-click="roleCtrl.update($index)" ng-if="role.editmode">Update</a>
 								    </li>
-								    <li><a ng-click="createPerson.delete($index)">Delete</a></li>
+								    <li><a ng-click="roleCtrl.delete($index)">Delete</a></li>
 								  </ul>
 								</div>
 							</div>
@@ -281,12 +393,166 @@
 					</form>
 				</div>
 		  </div>
-		  <div class="tab-pane fade" id="location">
-		    
-		  </div>
-			<div class="tab-pane fade" id="shift">
-		    <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
-		  </div>
+		   <div class="row well tab-pane fade" id="location"  ng-controller="LocationController as locationCtrl" ng-class="{'active' : locationCtrl.selectedTab}">
+        <div>
+          <form class="form-horizontal">
+            <fieldset>
+              <legend>Add location</legend>
+              <div class="col-xs-12 col-sm-6 form-group">
+                <label for="locationName" class="col-lg-3 control-label">Location Name</label>
+                <div class="col-lg-9">
+                  <input type="text" class="form-control" id="locationName" placeholder="Location Name"
+                  ng-model="locationCtrl.locationDetail.location_name">
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 form-group">
+                <label for="locationDesc" class="col-lg-3 control-label">Description</label>
+                <div class="col-lg-9">
+                  <textarea class="form-control" rows="1" id="locationDescription" ng-model="locationCtrl.locationDetail.location_desc" placeholder="Location Description"></textarea>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 form-group">
+                <div class="col-xs-12 col-lg-offset-3">
+                  <button type="submit" class="btn btn-primary" ng-click="locationCtrl.add()">Add</button>
+                  <button type="reset" class="btn btn-default" ng-click="locationCtrl.reset()">Cancel</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+        <div>
+          <form>
+          <legend>List of locations</legend>
+          <ol class="list-group">
+            <li class="list-group-item active">
+              <div class="clearfix">
+                <span class="col-xs-4">Location Name</span>
+                <span class="col-xs-4">Description</span>
+                <span class="col-xs-4 text-center">Actions</span>
+              </div>
+            </li>
+            <li class="list-group-item" ng-if="!locationCtrl.locations.length">
+              <div class="clearfix">
+                <span class="col-xs-12 text-center">No record available. Please add from above.</span>
+              </div>
+            </li>
+            <li class="list-group-item" ng-repeat="location in locationCtrl.locations" ng-class="{'list-group-item-warning': location.selected}">
+              <div class="list-group-item-text clearfix">
+                <div class="col-xs-4">
+                  <span ng-bind="location.location_name" ng-if="!location.editmode"></span>
+                  <input type="text" class="form-control" id="locationName" placeholder="Location Name"
+                  ng-model="location.location_name" ng-if="location.editmode" />
+                </div>
+                <div class="col-xs-4">
+                  <span ng-bind="location.location_desc" ng-if="!location.editmode"></span>
+                  <textarea class="form-control" rows="1" id="locationDesc" placeholder="Location Description"
+                  ng-model="location.location_desc" ng-if="location.editmode"></textarea> 
+                </div>
+                <div class="col-xs-4 hidden-xs text-center">
+                  <a class="btn btn-default btn-xs" role="button" ng-click="location.selected=true" ng-if="!location.selected">Select</a>
+                  <a class="btn btn-info btn-xs" role="button" ng-click="location.selected=false" ng-if="location.selected">Unselect</a>
+                  <a class="btn btn-default btn-xs" role="button" ng-click="location.editmode=true" ng-if="!location.editmode">Edit</a>
+                  <a class="btn btn-info btn-xs" role="button" ng-click="locationCtrl.update($index)" ng-if="location.editmode">Update</a>
+                  <a class="btn btn-default btn-xs" role="button" ng-click="locationCtrl.delete($index)">Delete</a>
+                </div>
+                <div class="col-xs-4 visible-xs btn-group text-center">
+                  <a class="btn btn-default btn-sm" role="button" ng-click="location.selected=true" ng-if="!location.selected">Select</a>
+                  <a class="btn btn-info btn-sm" role="button" ng-click="location.selected=false" ng-if="location.selected">Unselect</a>
+                  <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">&nbsp;<span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a ng-click="location.editmode=true" ng-if="!location.editmode">Edit</a>
+                      <a ng-click="locationCtrl.update($index)" ng-if="location.editmode" >Update</a>
+                    </li>
+                    <li><a ng-click="locationCtrl.delete($index)">Delete</a></li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+          </ol>
+          </form>
+        </div>
+      </div>
+		 	<div class="row well tab-pane fade" id="shift"  ng-controller="ShiftController as shiftCtrl" ng-class="{'active' : shiftCtrl.selectedTab}">
+        <div>
+          <form class="form-horizontal">
+            <fieldset>
+              <legend>Add shift</legend>
+              <div class="col-xs-12 col-sm-6 form-group">
+                <label for="shiftName" class="col-lg-3 control-label">Shift Name</label>
+                <div class="col-lg-9">
+                  <input type="text" class="form-control" id="shiftName" placeholder="EBH, BH, LBH"
+                  ng-model="shiftCtrl.shiftDetail.shift_name">
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 form-group">
+                <label for="shiftDescription" class="col-lg-3 control-label">Description</label>
+                <div class="col-lg-9">
+                  <textarea class="form-control" rows="1" id="shiftDescription" ng-model="shiftCtrl.shiftDetail.shift_desc" placeholder="Shift Description"></textarea>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 form-group">
+                <div class="col-xs-12 col-lg-offset-3">
+                  <button type="submit" class="btn btn-primary" ng-click="shiftCtrl.add()">Add</button>
+                  <button type="reset" class="btn btn-default" ng-click="shiftCtrl.reset()">Cancel</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+        <div>
+          <form>
+          <legend>List of shifts</legend>
+          <ol class="list-group">
+            <li class="list-group-item active">
+              <div class="clearfix">
+                <span class="col-xs-4">Shift Name</span>
+                <span class="col-xs-4">Description</span>
+                <span class="col-xs-4 text-center">Actions</span>
+              </div>
+            </li>
+            <li class="list-group-item" ng-if="!shiftCtrl.shifts.length">
+              <div class="clearfix">
+                <span class="col-xs-12 text-center">No record available. Please add from above.</span>
+              </div>
+            </li>
+            <li class="list-group-item" ng-repeat="shift in shiftCtrl.shifts" ng-class="{'list-group-item-warning': shift.selected}">
+              <div class="list-group-item-text clearfix">
+                <div class="col-xs-4">
+                  <span ng-bind="shift.shift_name" ng-if="!shift.editmode"></span>
+                  <input type="text" class="form-control" id="shiftName" placeholder="Shift Name"
+                  ng-model="shift.shift_name" ng-if="shift.editmode" />
+                </div>
+                <div class="col-xs-4">
+                  <span ng-bind="shift.shift_desc" ng-if="!shift.editmode"></span>
+                  <textarea rows="1" class="form-control" id="shiftDesc" placeholder="Shift Description"
+                  ng-model="shift.shift_desc" ng-if="shift.editmode"></textarea> 
+                </div>
+                <div class="col-xs-4 hidden-xs text-center">
+                  <a class="btn btn-default btn-xs" role="button" ng-click="shift.selected=true" ng-if="!shift.selected">Select</a>
+                  <a class="btn btn-info btn-xs" role="button" ng-click="shift.selected=false" ng-if="shift.selected">Unselect</a>
+                  <a class="btn btn-default btn-xs" role="button" ng-click="shift.editmode=true" ng-if="!shift.editmode">Edit</a>
+                  <a class="btn btn-info btn-xs" role="button" ng-click="shiftCtrl.update($index)" ng-if="shift.editmode">Update</a>
+                  <a class="btn btn-default btn-xs" role="button" ng-click="shiftCtrl.delete($index)">Delete</a>
+                </div>
+                <div class="col-xs-4 visible-xs btn-group text-center">
+                  <a class="btn btn-default btn-sm" role="button" ng-click="shift.selected=true" ng-if="!shift.selected">Select</a>
+                  <a class="btn btn-info btn-sm" role="button" ng-click="shift.selected=false" ng-if="shift.selected">Unselect</a>
+                  <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">&nbsp;<span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a ng-click="shift.editmode=true" ng-if="!shift.editmode">Edit</a>
+                      <a ng-click="shiftCtrl.update($index)" ng-if="shift.editmode" >Update</a>
+                    </li>
+                    <li><a ng-click="shiftCtrl.delete($index)">Delete</a></li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+          </ol>
+          </form>
+        </div>
+      </div>
 		</div>
 	</div>
 
