@@ -85,7 +85,7 @@
 		</ul>
 		<div id="myTabContent" class="tab-content">
 			<div class="row well tab-pane fade active in" id="rota" ng-controller="RotaController as rotaController">
-				<div>
+				<div ng-init="rotaController.initialize('create')">
 					<form class="form-horizontal">
 					  <fieldset>
 					    <legend ng-if="!rotaController.editmode">Add ROTA</legend>

@@ -1,3 +1,8 @@
+/* TODO: Remove person/location/shift/role data from rota_mapper, if they are deleted from respective table */
+/* TODO: Confimartion popup before deletion */
+/* TODO: Edit/ Delete All feature */
+/* TODO: Restrict Update call if no change has been made */
+
 var app = angular.module('murphy', []);
 
 app.controller('CreatePerson', function ($http, $rootScope) {
@@ -6,11 +11,13 @@ app.controller('CreatePerson', function ($http, $rootScope) {
   this.personDetail = {};
   this.persons = [];
 
-
+  /* TODO: Make angular service for data calls */
   this.get = function () {
     $http.get('api/person/all')
       .success(function (response) {
         self.persons = response.data;
+
+        /* TODO: Dont use rootscope for data storage */
         $rootScope.rotaAutofill.persons = self.persons;
       });
   };
@@ -51,6 +58,7 @@ app.controller('CreatePerson', function ($http, $rootScope) {
     this.personDetail = {};
   };
 
+  /* TODO: Make data fetching event based */
   this.get();
 });
 
@@ -216,23 +224,27 @@ app.controller('LocationController', function ($http, $rootScope) {
 
 });
 
+/* TODO: Make simpler logic for ROTA actions */
+/* TODO: Lessen the number of http calls and db connections*/
 app.controller('RotaController', function ($http, $rootScope) {
 
   $rootScope.rotaAutofill = {};
   var self = this;
   this.rotaDetail = {
-    "rows" : [{
-      "person_id" : '',
-      "role_id" : '',
-      "location_id" : '',
-      "shift_id" : ''
+    "rows": [{
+      "person_id": '',
+      "role_id": '',
+      "location_id": '',
+      "shift_id": ''
     }]
   };
-  this.rows = [1];
   this.rotas = [];
 
+  /* TODO: Dont use rootscope for data storage */
+  /* LO : Use of $rootScope.$watchCollection */
   $rootScope.$watchCollection('rotaDetail', function () {
     self.rotaAutofill = $rootScope.rotaAutofill;
+    console.log("self.rotaAutofill", self.rotaAutofill);
   });
 
   this.get = function () {
@@ -259,13 +271,13 @@ app.controller('RotaController', function ($http, $rootScope) {
     this.rotaDetail.rota_id = this.rotas[rota_index].rota_id;
     this.rotaDetail.rota_name = this.rotas[rota_index].rota_name;
     this.rotaDetail.rota_desc = this.rotas[rota_index].rota_desc;
-    
+
     $http.get('api/rota/all/' + this.rotas[rota_index].rota_id)
       .success(function (response) {
         self.rotaDetail.rows = response.data;
+        self.rotas[rota_index].rows = response.data;
       })
-      .error(function(error){});
-      
+      .error(function (error) {});
   };
 
   this.update = function (rota_id) {
@@ -276,7 +288,6 @@ app.controller('RotaController', function ($http, $rootScope) {
         self.get();
       })
       .error(function (error) {});
-
   };
 
   this.delete = function (rota_index) {
@@ -293,23 +304,37 @@ app.controller('RotaController', function ($http, $rootScope) {
   this.reset = function () {
     this.editmode = false;
     this.rotaDetail = {
-      "rows" : [{
-        "person_id" : "",
-        "role_id" : "",
-        "location_id" : "",
-        "shift_id" : ""
+      "rows": [{
+        "person_id": "",
+        "role_id": "",
+        "location_id": "",
+        "shift_id": ""
       }]
     };
   };
 
   this.addRow = function () {
     this.rotaDetail.rows.push({
-      "person_id" : "",
-      "role_id" : "",
-      "location_id" : "",
-      "shift_id" : ""
+      "person_id": "",
+      "role_id": "",
+      "location_id": "",
+      "shift_id": ""
     });
-  }
+  };
 
-  this.get();
+  this.getRotaDetails = function () {
+    $http.get('api/rota/all-detailed')
+      .success(function (response) {
+        self.rotas = response.data;
+      });
+  };
+
+  this.initialize = function (page) {
+    console.log("this.page", page);
+    if (page === 'create') {
+      this.get();
+    } else {
+      this.getRotaDetails();
+    }
+  }
 });
