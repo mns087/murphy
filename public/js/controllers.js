@@ -5,7 +5,7 @@
 
 var app = angular.module('murphy', []);
 
-app.controller('CreatePerson', function ($http, $rootScope) {
+app.controller('PersonController', function ($http, $rootScope) {
 
   var self = this;
   this.personDetail = {};
@@ -331,7 +331,7 @@ app.controller('RotaController', function ($http, $rootScope) {
 
   this.initialize = function (page) {
     console.log("this.page", page);
-    if (page === 'create') {
+    if (page === 'dashboard') {
       this.get();
     } else {
       this.getRotaDetails();
