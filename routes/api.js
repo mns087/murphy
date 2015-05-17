@@ -243,17 +243,17 @@ router.post('/location/update', function (req, res, next) {
 router.post('/rota/add', function (req, res, next) {
 
   /* TODO: Use clean Insert query provided by nodejs-mysql module */
-  db.query("INSERT INTO rota (rota_name, rota_desc) VALUES ('" + req.body.rota_name + "', '" + (req.body.rota_desc || "") + "')", function (err, rows, fields) {
+  db.query("INSERT INTO rota (rota_name, rota_desc, rota_start, rota_end) VALUES ('" + req.body.rota_name + "', '" + (req.body.rota_desc || "") + "', '" + (req.body.rota_start) + "', '" + (req.body.rota_end) + "')" , function (err, rows, fields) {
     if (err) {
       throw err;
       res.send('{"status": "error"}');
     } else {
       var values = [];
       for (var i = 0; i < req.body.rows.length; i++) {
-        values[i] = [rows.insertId, req.body.rows[i].person_id, req.body.rows[i].role_id, req.body.rows[i].location_id, req.body.rows[i].shift_id];
+        values[i] = [rows.insertId, req.body.rows[i].person_id, req.body.rows[i].role_id, req.body.rows[i].location_id, req.body.rows[i].shift_id, req.body.rows[i].rota_mapper_start, req.body.rows[i].rota_mapper_end];
       }
       /* LO: Multiple insert query */
-      db.query("INSERT INTO rota_mapper (rota_id, person_id, role_id, location_id, shift_id) VALUES ?", [values], function (err) {
+      db.query("INSERT INTO rota_mapper (rota_id, person_id, role_id, location_id, shift_id, rota_mapper_start, rota_mapper_end) VALUES ?", [values], function (err) {
         if (err) {
           res.send('{"status": "error"}');
         } else {
@@ -360,14 +360,14 @@ router.post('/rota/update', function (req, res, next) {
   */
 
   /* TODO: Get away with nested queries */
-  db.query("UPDATE rota SET rota_name='" + req.body.rota_name + "', rota_desc='" + req.body.rota_desc + "' WHERE rota_id = '" + req.body.rota_id + "'", function () {
+  db.query("UPDATE rota SET rota_name='" + req.body.rota_name + "', rota_desc='" + req.body.rota_desc + "', rota_start='" + req.body.rota_start + "', rota_end='" + req.body.rota_end + "' WHERE rota_id = '" + req.body.rota_id + "'", function () {
     db.query("DELETE FROM rota_mapper WHERE rota_id = '" + req.body.rows[0].rota_id + "'", function (err, rows, fields) {
       var values = [];
       for (var i = 0; i < req.body.rows.length; i++) {
-        values[i] = [req.body.rota_id, req.body.rows[i].person_id, req.body.rows[i].role_id, req.body.rows[i].location_id, req.body.rows[i].shift_id];
+        values[i] = [req.body.rota_id, req.body.rows[i].person_id, req.body.rows[i].role_id, req.body.rows[i].location_id, req.body.rows[i].shift_id, req.body.rows[i].rota_mapper_start, req.body.rows[i].rota_mapper_end];
       }
 
-      db.query("INSERT INTO rota_mapper (rota_id, person_id, role_id, location_id, shift_id) VALUES ?", [values], function (err) {
+      db.query("INSERT INTO rota_mapper (rota_id, person_id, role_id, location_id, shift_id, rota_mapper_start, rota_mapper_end) VALUES ?", [values], function (err) {
         if (err) {
           res.send('{"status": "error"}');
         } else {

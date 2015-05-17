@@ -3,7 +3,7 @@
 /* TODO: Edit/ Delete All feature */
 /* TODO: Restrict Update call if no change has been made */
 
-var app = angular.module('murphy', []);
+var app = angular.module('murphy', ['ui.bootstrap']);
 
 app.controller('PersonController', function ($http, $rootScope) {
 
@@ -240,6 +240,13 @@ app.controller('RotaController', function ($http, $rootScope) {
   };
   this.rotas = [];
 
+  this.datepicker = {
+    dateOptions : {
+      showWeeks: false,
+      startingDay: 1
+    }
+  }
+  
   /* TODO: Dont use rootscope for data storage */
   /* LO : Use of $rootScope.$watchCollection */
   $rootScope.$watchCollection('rotaDetail', function () {
@@ -258,6 +265,7 @@ app.controller('RotaController', function ($http, $rootScope) {
 
     if (this.rotaDetail.rota_name === undefined) return;
 
+
     $http.post('api/rota/add', this.rotaDetail)
       .success(function (response) {
         self.get();
@@ -271,6 +279,8 @@ app.controller('RotaController', function ($http, $rootScope) {
     this.rotaDetail.rota_id = this.rotas[rota_index].rota_id;
     this.rotaDetail.rota_name = this.rotas[rota_index].rota_name;
     this.rotaDetail.rota_desc = this.rotas[rota_index].rota_desc;
+    this.rotaDetail.rota_start = this.rotas[rota_index].rota_start;
+    this.rotaDetail.rota_end = this.rotas[rota_index].rota_end;
 
     $http.get('api/rota/all/' + this.rotas[rota_index].rota_id)
       .success(function (response) {
@@ -323,6 +333,7 @@ app.controller('RotaController', function ($http, $rootScope) {
   };
 
   this.getRotaDetails = function () {
+
     $http.get('api/rota/all-detailed')
       .success(function (response) {
         self.rotas = response.data;
@@ -336,5 +347,31 @@ app.controller('RotaController', function ($http, $rootScope) {
     } else {
       this.getRotaDetails();
     }
-  }
+  };
+
+  this.opened = {};
+  this.open = function($event, type) {
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    if (type=='start') {
+      this.opened.start = true;
+      if (!this.rotaDetail.rota_end) {
+        
+        this.opened.end = true;
+      }
+    } else if(type=='end'){
+      this.opened.end = true;
+      if (!this.rotaDetail.rota_start) {
+        
+        this.opened.start = true;
+      }
+    }
+    
+  };
+  this.open_each = function ($event, index) { 
+    $event.preventDefault();
+    $event.stopPropagation();
+    this.rotaDetail.rows[index].opened = true;
+  };
 });
