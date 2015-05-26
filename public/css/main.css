@@ -48,22 +48,15 @@ fieldset[disabled] .btn-input.active {
   background-color: #ffffff;
 }
 
-
-
-
-.date-picker-custom ul.dropdown-menu {
-  top: 100% !important;
-  left: -330px !important;
-}
-.date-picker-custom ul.dropdown-menu:last-child {
-  left: -60 !important;
-}
-ul.dropdown-menu {
-  padding: 10px;
-}
-ul.dropdown-menu * {
+.btn:focus, 
+.btn:active:focus, 
+.btn.active:focus, 
+.btn.focus, 
+.btn:active.focus, 
+.btn.active.focus {
   outline: 0;
 }
+
 .dropdown-menu .btn-default, 
 .dropdown-menu .btn-info,
 .dropdown-menu .btn-warning,
@@ -75,4 +68,62 @@ ul.dropdown-menu * {
 
 .dropdown-menu .glyphicon {
   top: 0;
+}
+
+.highlight-background {
+  background-color: #fcf8e3;
+  border-radius: 4px;
+  padding: 2px 0;
+}
+
+.highlight-background > div {
+  margin: 2px 0;
+}
+
+ul.dropdown-menu {
+  padding: 10px;
+}
+
+ul.dropdown-menu * {
+  outline: 0;
+}
+
+/* desktop specific */
+@media (min-width: 769px) {
+
+  .date-picker-custom ul.dropdown-menu {
+    top: 100% !important;
+    left: -330px !important;
+  }
+
+  .date-picker-custom ul.dropdown-menu:last-child {
+    left: -60 !important;
+  }
+
+  .highlight-background {
+    background-color: inherit;
+    border-radius: 0px;
+    padding: 0;
+  }
+
+  .highlight-background > div {
+    margin: 0
+  }  
+}
+
+/*Mobile specific */
+@media (max-width: 768px) {
+  .well {
+    padding: 5px;
+  }
+  .list-group-item {
+    padding: 10px; 
+  }
+  .list-group-item {
+    padding: 10px 10px 1px 10px;
+  }
+  .list-group-actions {
+    padding: 0 5px;
+    margin-top: 10px;
+  }
 }

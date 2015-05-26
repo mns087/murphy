@@ -245,13 +245,13 @@ app.controller('RotaController', function ($http, $rootScope) {
       showWeeks: false,
       startingDay: 1
     }
-  }
+  };
+  this.showProgress = false;
   
   /* TODO: Dont use rootscope for data storage */
   /* LO : Use of $rootScope.$watchCollection */
   $rootScope.$watchCollection('rotaDetail', function () {
     self.rotaAutofill = $rootScope.rotaAutofill;
-    console.log("self.rotaAutofill", self.rotaAutofill);
   });
 
   this.get = function () {
@@ -265,17 +265,19 @@ app.controller('RotaController', function ($http, $rootScope) {
 
     if (this.rotaDetail.rota_name === undefined) return;
 
-
+    this.showProgress = true;
     $http.post('api/rota/add', this.rotaDetail)
       .success(function (response) {
         self.get();
         self.reset();
+        self.showProgress = false;
       })
       .error(function (error) {});
   };
 
   this.edit = function (rota_index) {
     this.editmode = true;
+    this.rotas[rota_index].editmode = true;
     this.rotaDetail.rota_id = this.rotas[rota_index].rota_id;
     this.rotaDetail.rota_name = this.rotas[rota_index].rota_name;
     this.rotaDetail.rota_desc = this.rotas[rota_index].rota_desc;
@@ -292,12 +294,16 @@ app.controller('RotaController', function ($http, $rootScope) {
 
   this.update = function (rota_id) {
 
+    this.showProgress = true;
     $http.post('api/rota/update', self.rotaDetail)
       .success(function (response) {
-        self.reset();
+        //self.reset();
         self.get();
+        self.showProgress = false;
       })
-      .error(function (error) {});
+      .error(function (error) {
+        self.showProgress = false;
+      });
   };
 
   this.delete = function (rota_index) {
@@ -321,6 +327,9 @@ app.controller('RotaController', function ($http, $rootScope) {
         "shift_id": ""
       }]
     };
+    for(var i=0; i<this.rotas.length; i++) {
+      this.rotas[i].editmode = false;
+    }
   };
 
   this.addRow = function () {
@@ -353,22 +362,34 @@ app.controller('RotaController', function ($http, $rootScope) {
   this.open = function($event, type) {
     $event.preventDefault();
     $event.stopPropagation();
-
+    
+    this.opened = {};
     if (type=='start') {
       this.opened.start = true;
-      if (!this.rotaDetail.rota_end) {
+      
+      // if (!this.rotaDetail.rota_end) {
         
-        this.opened.end = true;
-      }
+      //   this.opened.end = true;
+      // }
+      
     } else if(type=='end'){
       this.opened.end = true;
-      if (!this.rotaDetail.rota_start) {
+      
+      
+      // if (!this.rotaDetail.rota_start) {
         
-        this.opened.start = true;
-      }
+      //   this.opened.start = true;
+      // }
+      
     }
     
   };
+  
+  this.close = function () {
+
+    this.opened = {};
+  };
+  
   this.open_each = function ($event, index) { 
     $event.preventDefault();
     $event.stopPropagation();

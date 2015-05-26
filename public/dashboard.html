@@ -90,96 +90,112 @@
 					<form class="form-horizontal">
 					  <fieldset>
 					    <legend ng-if="!rotaController.editmode">Add ROTA</legend>
-					    <legend ng-if="rotaController.editmode">Update ROTA</legend>
-					    <div class="row form-group">
+					    <legend ng-if="rotaController.editmode">Edit ROTA</legend>
+					    <div class="row">
 						    <div class="col-xs-12 col-sm-6">
-						      <label for="rotaName" class="col-lg-3 control-label">ROTA Name</label>
-						      <div class="col-lg-9">
-						        <input type="text" class="form-control" id="rotaName" placeholder="e.g. Monthly Rota : April 2015"
+						    	<div class="row form-group">
+						      	<label for="rotaName" class="col-lg-3 control-label">ROTA Name</label>
+						      	<div class="col-lg-9">
+						        	<input type="text" class="form-control" id="rotaName" placeholder="e.g. Monthly Rota : April 2015"
 					        	ng-model="rotaController.rotaDetail.rota_name">
+						      	</div>
 						      </div>
 						    </div>
 						    <div class="col-xs-12 col-sm-6">
-						      <label for="rotaDesc" class="col-lg-3 control-label">Description</label>
-						      <div class="col-lg-9">
-						        <textarea class="form-control" rows="1" id="rotaDesc" ng-model="rotaController.rotaDetail.rota_desc" placeholder="Monthly ROTA for April"></textarea>
+						      <div class="row form-group">
+							      <label for="rotaDesc" class="col-lg-3 control-label">Description</label>
+							      <div class="col-lg-9">
+							        <textarea class="form-control" rows="1" id="rotaDesc" ng-model="rotaController.rotaDetail.rota_desc" placeholder="Monthly ROTA for April"></textarea>
+							      </div>
 						      </div>
 						    </div>
 					    </div>
-							<div class="row form-group">
+							<div class="row">
 						  	<div class="col-xs-12 col-sm-6">
-						      <label for="rotaName" class="col-lg-3 control-label">Start date</label>
-						      <div class="col-lg-9">
-				    				<input type="text" class="form-control" datepicker-popup="longDate" ng-model="rotaController.rotaDetail.rota_start" is-open="rotaController.opened.start" min-date="minDate" datepicker-options="rotaController.datepicker.dateOptions" ng-click="rotaController.open($event, 'start')"/>
+						  		<div class="row form-group">
+							      <label for="rotaName" class="col-lg-3 control-label">Start date</label>
+							      <div class="col-lg-9">
+					    				<input type="text" class="form-control" datepicker-popup="longDate" ng-model="rotaController.rotaDetail.rota_start" is-open="rotaController.opened.start" min-date="minDate" datepicker-options="rotaController.datepicker.dateOptions" ng-focus="rotaController.open($event, 'start')"/>
+	              	  </div>
               	  </div>
 						    </div>
 								<div class="col-xs-12 col-sm-6">
-						      <label for="rotaDesc" class="col-lg-3 control-label">End date</label>
-						      <div class="col-lg-9">
-						      	<input type="text" class="form-control" datepicker-popup="longDate" ng-model="rotaController.rotaDetail.rota_end" is-open="rotaController.opened.end" min-date="rotaController.rotaDetail.rota_start" datepicker-options="rotaController.datepicker.dateOptions" ng-click="rotaController.open($event, 'end')"/>
+						      <div class="row form-group">
+						      	<label for="rotaDesc" class="col-lg-3 control-label">End date</label>
+						      	<div class="col-lg-9">
+						      		<input type="text" class="form-control" datepicker-popup="longDate" ng-model="rotaController.rotaDetail.rota_end" is-open="rotaController.opened.end" min-date="rotaController.rotaDetail.rota_start" datepicker-options="rotaController.datepicker.dateOptions" ng-focus="rotaController.open($event, 'end')"/>
+						      	</div>
 						      </div>
 						    </div>
 							</div>
-							<div class="row form-group" ng-repeat="row in rotaController.rotaDetail.rows">
-						  	<div>
-						      <div class="col-xs-3">
+							<div class="row form-group highlight-background" ng-repeat="row in rotaController.rotaDetail.rows">
+						  	
+						      <div class="col-xs-6 col-sm-3">
 						      	<!--
 						      	<select class="form-control" id="rotaPerson" ng-model="row.person_id" ng-options="person.name as person.first_name + ' ' + person.last_name for person in rotaController.rotaAutofill.persons">
 						      		<option value="">Add person</option>
 						      	</select>-->
 						        
-						        <select class="form-control" id="rotaPerson_{{$index}}" ng-model="row.person_id">
+						        <select class="form-control" id="rotaPerson_{{$index}}" ng-model="row.person_id" ng-focus="rotaController.close()">
 						        	<option value="">Add person</option>
 						        	<option ng-repeat="person in rotaController.rotaAutofill.persons" value="{{person.person_id}}" ng-bind="person.first_name + ' '+ person.last_name" ng-selected="row.person_id==person.person_id"></option>
 						        </select>
 						        
 						      </div>
-						      <div class="col-xs-2">
+						      <div class="col-xs-6 col-sm-2">
+						      
 						        <select class="form-control" id="rotaRole" ng-model="row.role_id">
 						        	<option value="">Add role</option>
 						        	<option ng-repeat="role in rotaController.rotaAutofill.roles" value="{{role.role_id}}" ng-bind="role.role_name" ng-selected="row.role_id==role.role_id"></option>
 						        </select>
 						      </div>
-						      <div class="col-xs-2">
+						      <div class="col-xs-6 col-sm-2">
 						        <select class="form-control" id="rotaLocation" ng-model="row.location_id">
 						        	<option value="">Add location</option>
 						        	<option ng-repeat="location in rotaController.rotaAutofill.locations" value="{{location.location_id}}" ng-bind="location.location_name" ng-selected="row.location_id==location.location_id"></option>
 						        </select>
 						        
 							    </div>
-						      <div class="col-xs-3">
+						      <div class="col-xs-6 col-sm-3">
 						        <select class="form-control" id="rotaShift" ng-model="row.shift_id">
 						        	<option value="">Add shift</option>
 						        	<option ng-repeat="shift in rotaController.rotaAutofill.shifts" value="{{shift.shift_id}}" ng-bind="shift.shift_name" ng-selected="row.shift_id==shift.shift_id"></option>
 						        </select>
 						      </div>
-						      <div class="col-xs-2 text-center">
+						      <div class="col-xs-12 col-sm-2 text-center">
 						      	<button class="btn btn-input btn-block" ng-click="rotaController.open_each($event, $index)">
 							      	<span ng-bind="row.rota_mapper_start | date:'MMM d'"></span>
 							      	<span ng-if="row.rota_mapper_end != row.rota_mapper_start" ng-bind="' - ' + (row.rota_mapper_end | date:'MMM d')"></span>
 							      	<span ng-if="!row.rota_mapper_start && !row.rota_mapper_start">Assign Date</span>
+							      	<span class="caret"></span>
 						      	</button>
 						      	<div class="date-picker-custom">
 						      		<input type="hidden" ng-model="row.rota_mapper_start" datepicker-popup="longDate" ng-model="row.rota_mapper_end" is-open="row.opened" min-date="rotaController.rotaDetail.rota_start" max-date="rotaController.rotaDetail.rota_end" datepicker-options="rotaController.datepicker.dateOptions"/>
 						      		<input type="hidden" type="hidden" ng-model="row.rota_mapper_end" datepicker-popup="longDate" ng-model="row.rota_mapper_end" is-open="row.opened" min-date="row.rota_mapper_start" max-date="rotaController.rotaDetail.rota_end" datepicker-options="rotaController.datepicker.dateOptions"/>
 						      	</div>
 						      </div>
-							  </div>
+							  
 					    </div>
 					    
 							<div class="row form-group">
 								<div class="col-xs-12">
-									<a ng-click="rotaController.addRow()" class="btn btn-input btn-block">Add new row</a>
+									<a ng-click="rotaController.addRow()" class="btn btn-input btn-block" tabindex="0">Add new row</a>
 								</div>
 							</div>
-
-					    <div class="row form-group">
-					      <div class="col-xs-12">
+							<div class="row form-group">
+					      <div class="col-xs-12 btn-group">
 					        <button type="submit" class="btn btn-primary" ng-click="rotaController.add()" ng-if="!rotaController.editmode">Add</button>
 					        <button type="submit" class="btn btn-primary" ng-click="rotaController.update(rotaController.rotaDetail.rota_id)" ng-if="rotaController.editmode">Update</button>
 					        <button type="reset" class="btn btn-default" ng-click="rotaController.reset()">Cancel</button>
 					      </div>
 					    </div>
+					    <div class="row" ng-show="rotaController.showProgress">
+								<div class="col-xs-12 text-center">
+									<div class="progress progress-striped active">
+									  <div class="progress-bar" style="width: 100%"></div>
+									</div>
+								</div>
+							</div>
 					  </fieldset>
 					</form>
 				</div>
@@ -188,11 +204,11 @@
 					<legend>List of ROTAs</legend>
 					<ol class="list-group">
 						<li class="list-group-item active">
-							<div class="clearfix">
-								<span class="col-xs-3">Name</span>
-								<span class="col-xs-3">Description</span>
-								<span class="col-xs-3">Assigned Date</span>
-								<span class="col-xs-3 text-center">Actions</span>
+							<div class="row">
+								<span class="col-xs-4 col-sm-3">Name</span>
+								<span class="col-xs-4 col-sm-3">Description</span>
+								<span class="col-xs-4 col-sm-3">Assigned Date</span>
+								<span class="col-xs-12 col-sm-3 text-center hidden-xs">Actions</span>
 							</div>
 						</li>
 						<li class="list-group-item" ng-if="!rotaController.rotas.length">
@@ -200,25 +216,35 @@
 								<span class="col-xs-12 text-center">No record available. Please add from above.</span>
 							</div>
 						</li>
-						<li class="list-group-item" ng-repeat="rota in rotaController.rotas" ng-class="{'list-group-item-warning': rota.selected}">
-							<div class="list-group-item-text clearfix">
-								<div class="col-xs-3">
-									<span ng-bind="rota.rota_name" ng-if="!rota.editmode"></span>
+						<li class="list-group-item" ng-repeat="rota in rotaController.rotas" ng-class="{'list-group-item-warning': (rota.selected || rota.editmode)}">
+							<div class="row list-group-item-text clearfix">
+								<div class="col-xs-4 col-sm-3">
+									<span ng-bind="rota.rota_name"></span>
 								</div>
-								<div class="col-xs-3">
-									<span ng-bind="rota.rota_desc" ng-if="!rota.editmode"></span>
+								<div class="col-xs-4 col-sm-3">
+									<span ng-bind="rota.rota_desc"></span>
 								</div>
-								<div class="col-xs-3">
-									<span ng-bind="(rota.rota_start | date:'longDate') + ' - ' + (rota.rota_end | date:'longDate')"></span>
+								<div class="col-xs-4 col-sm-3">
+									<span class="hidden-xs" ng-bind="(rota.rota_start | date:'longDate') + ' - ' + (rota.rota_end | date:'longDate')"></span>
+									<span class="visible-xs" ng-bind="(rota.rota_start | date:'MMM d') + ' - ' + (rota.rota_end | date:'MMM d')"></span>
 								</div>
-								<div class="col-xs-3 hidden-xs text-center" ng-class="{'col-xs-9 col-xs-offset-3' : rota.editmode}">
-									<a class="btn btn-default btn-xs" role="button" ng-click="rota.selected=true" ng-if="!rota.selected">Select</a>
-									<a class="btn btn-info btn-xs" role="button" ng-click="rota.selected=false" ng-if="rota.selected">Unselect</a>
-									<a class="btn btn-default btn-xs" role="button" ng-click="rotaController.edit($index)" ng-if="!rota.editmode">Edit</a>
-									<a class="btn btn-info btn-xs" role="button" ng-click="rotaController.update($index)" ng-if="rota.editmode">Update</a>
-									<a class="btn btn-default btn-xs"role="button" ng-click="rotaController.delete($index)">Delete</a>
+								<div class="col-xs-12 col-sm-3 list-group-actions">
+									<div class="btn-group btn-group-justified text-center">
+										<a class="btn btn-default btn-sm" role="button" ng-click="rota.selected=true" ng-if="!rota.selected && !rota.deletemode">Select</a>
+										<a class="btn btn-info btn-sm" role="button" ng-click="rota.selected=false" ng-if="rota.selected && !rota.deletemode">Unselect</a>
+
+										<a class="btn btn-default btn-sm" role="button" ng-click="rotaController.reset();rotaController.edit($index)" ng-if="!rota.editmode && !rota.deletemode">Edit</a>
+										<a class="btn btn-info btn-sm" role="button" ng-click="rotaController.reset()" ng-if="rota.editmode && !rota.deletemode">Cancel Edit</a>
+										
+										<a class="btn btn-danger btn-sm" role="button" ng-click="rotaController.delete($index)" ng-if="rota.deletemode">Yes</a>
+										<a class="btn btn-default btn-sm" role="button" ng-click="rotaController.reset();rota.deletemode=false" ng-if="rota.deletemode">No</a>
+										
+										<a class="btn btn-default btn-sm"role="button" ng-click="rota.deletemode=true" ng-if="!rota.deletemode">Delete</a>
+										<a class="btn btn-info btn-sm"role="button" ng-if="rota.deletemode">Confirm ?</a>
+									</div>
 								</div>
-								<div class="col-xs-3 visible-xs btn-group text-center">
+								<!--
+								<div class="col-xs-6 col-sm-3 hidden-xs btn-group text-center">
 									<a class="btn btn-default btn-sm" role="button" ng-click="rota.selected=true" ng-if="!rota.selected">Select</a>
 									<a class="btn btn-info btn-sm" role="button" ng-click="rota.selected=false" ng-if="rota.selected">Unselect</a>
 								  <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">&nbsp;<span class="caret"></span></a>
@@ -230,6 +256,7 @@
 								    <li><a ng-click="rotaController.delete($index)">Delete</a></li>
 								  </ul>
 								</div>
+								-->
 							</div>
 						</li>
 					</ol>
@@ -612,10 +639,9 @@
 	</div>
 </div>
 </footer>
-<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="js/lib/jquery-1.10.2.min.js"></script>
+<script src="js/lib/angular.min.js"></script>
+<script src="js/lib/ui-bootstrap-tpls-0.13.0.js"></script><script src="js/bootstrap.min.js"></script>
 <script src="js/controllers.js"></script>
 
 </body>
