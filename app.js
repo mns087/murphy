@@ -61,4 +61,33 @@ app.use(function (err, req, res, next) {
 });
 
 
+var mailer = require("nodemailer");
+
+// Use Smtp Protocol to send Email
+var smtpTransport = mailer.createTransport("SMTP",{
+    service: "Gmail",
+    auth: {
+        user: "razabmonis@gmail.com",
+        pass: "mns@12345"
+    }
+});
+
+var mail = {
+    from: "Monis Raza <razabmonis@gmail.com>",
+    to: "mraza@sapient.com",
+    subject: "Nodejs mailer",
+    text: "Hello World",
+    html: "<b>Hello World</b>"
+}
+
+smtpTransport.sendMail(mail, function(error, response){
+    if(error){
+        console.log("mailer error", error);
+    }else{
+        console.log("Message sent: " + response.message);
+    }
+
+    smtpTransport.close();
+});
+
 module.exports = app;
