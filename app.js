@@ -74,7 +74,7 @@ var smtpTransport = mailer.createTransport("SMTP",{
 
 var mail = {
     from: "Monis Raza <razabmonis@gmail.com>",
-    to: "mraza@sapient.com",
+    to: "mns087@gmail.com",
     subject: "Nodejs mailer",
     text: "Hello World",
     html: "<b>Hello World</b>"
